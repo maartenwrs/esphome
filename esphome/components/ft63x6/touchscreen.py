@@ -17,6 +17,7 @@ FT63X6Touchscreen = ft6336u_ns.class_(
 )
 
 CONF_FT63X6_ID = "ft63x6_id"
+CONF_SWAP_X_Y = "swap_x_y"
 
 
 CONFIG_SCHEMA = touchscreen.TOUCHSCREEN_SCHEMA.extend(
@@ -27,6 +28,7 @@ CONFIG_SCHEMA = touchscreen.TOUCHSCREEN_SCHEMA.extend(
                 pins.internal_gpio_input_pin_schema
             ),
             cv.Optional(CONF_RESET_PIN): pins.gpio_output_pin_schema,
+            cv.Optional(CONF_SWAP_X_Y, default=False): cv.boolean,
         }
     )
     .extend(i2c.i2c_device_schema(0x38))
@@ -46,3 +48,6 @@ async def to_code(config):
     if CONF_RESET_PIN in config:
         reset_pin = await cg.gpio_pin_expression(config[CONF_RESET_PIN])
         cg.add(var.set_reset_pin(reset_pin))
+
+    cg.add(var.set_swap_x_y(config[CONF_SWAP_X_Y]))
+

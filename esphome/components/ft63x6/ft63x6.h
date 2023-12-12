@@ -50,6 +50,7 @@ class FT63X6Touchscreen : public Touchscreen, public PollingComponent, public i2
 
   void set_interrupt_pin(InternalGPIOPin *pin) { this->interrupt_pin_ = pin; }
   void set_reset_pin(GPIOPin *pin) { this->reset_pin_ = pin; }
+  void set_swap_x_y(bool val) { this->swap_x_y_ = val; }
 
  protected:
   void hard_reset_();
@@ -60,6 +61,7 @@ class FT63X6Touchscreen : public Touchscreen, public PollingComponent, public i2
   GPIOPin *reset_pin_{nullptr};
   uint16_t x_resolution_;
   uint16_t y_resolution_;
+  bool swap_x_y_;
 
   uint8_t read_touch_count_();
   uint16_t read_touch_coordinate_(uint8_t coordinate);

@@ -114,6 +114,10 @@ void FT63X6Touchscreen::check_touch_() {
         break;
     }
 
+  if (this->swap_x_y_) {
+    std::swap(x_resolution, y_resolution);
+  }
+
   for (uint8_t i = first_touch_id; i < (touch_count + first_touch_id); i++) {
     uint32_t raw_x = touch_point_.tp[i].x * w / x_resolution;
     uint32_t raw_y = touch_point_.tp[i].y * h / y_resolution;
@@ -136,6 +140,10 @@ void FT63X6Touchscreen::check_touch_() {
         tp.x = w - std::min<uint32_t>(raw_y, w);
         tp.y = raw_x;
         break;
+    }
+
+    if (this->swap_x_y_) {
+      std::swap(tp.x, tp.y);
     }
 
     tp.id = i;
